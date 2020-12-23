@@ -1,16 +1,23 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div class="count">{{count}}</div>
+  <div class="btn" @click="increase">++</div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'App',
-  components: {
-    HelloWorld
+  setup() {
+    const count = ref(0)
+    const increase = () => {
+      count.value++
+    }
+    return {
+      count,
+      increase
+    }
   }
 });
 </script>
@@ -23,5 +30,17 @@ export default defineComponent({
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.count {
+  font-size: 30px;
+  font-weight: 700
+}
+.btn {
+  width: 100px;
+  height: 30px;
+  background-color: yellowgreen;
+  margin: 0 auto;
+  line-height: 30px;
+  text-align: center
 }
 </style>
