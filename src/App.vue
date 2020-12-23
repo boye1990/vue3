@@ -6,26 +6,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue';
+import { defineComponent, computed, reactive, toRefs } from 'vue';
+
+interface DataProps {
+  count: number;
+  double: number;
+  increase: () => void;
+}
 
 export default defineComponent({
   name: 'App',
   setup() {
-    // ref 创建的是响应式对象
-    
-    const count = ref(0)
-    // computed 是计算熟悉，他的参数是一个函数
-    const double = computed(() => {
-      return count.value * 2
+    // // ref 创建的是响应式对象
+    // const count = ref(0)
+    // // computed 是计算熟悉，他的参数是一个函数
+    // const double = computed(() => {
+    //   return count.value * 2
+    // })
+    // // 普通函数
+    // const increase = () => {
+    //   count.value++
+    // }
+    // reactive 生成响应式对象
+    const data: DataProps = reactive({
+      count: 0,
+      increase: () => { data.count++ },
+      double: computed(() => data.count * 2)
     })
-    // 普通函数
-    const increase = () => {
-      count.value++
-    }
+    // 如果直接展开data，他的每一项将失去响应式对象属性。因此要通过toRefs 转化为 响应式对象
+    const refData = toRefs(data)
     return {
-      count,
-      double,
-      increase
+      ...refData
     }
   }
 });
