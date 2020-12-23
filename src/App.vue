@@ -1,21 +1,29 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <div class="count">{{count}}</div>
-  <div class="btn" @click="increase">++</div>
+  <div class="count">{{ count }}</div>
+  <div class="count">{{ double }}</div>
+  <div class="btn" @click="increase"> ++ </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 
 export default defineComponent({
   name: 'App',
   setup() {
+    // ref 创建的是响应式对象
     const count = ref(0)
+    // computed 是计算熟悉，他的参数是一个函数
+    const double = computed(() => {
+      return count.value * 2
+    })
+    // 普通函数
     const increase = () => {
       count.value++
     }
     return {
       count,
+      double,
       increase
     }
   }
