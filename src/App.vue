@@ -12,6 +12,7 @@ export default defineComponent({
   name: 'App',
   setup() {
     // ref 创建的是响应式对象
+    
     const count = ref(0)
     // computed 是计算熟悉，他的参数是一个函数
     const double = computed(() => {
