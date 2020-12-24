@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, reactive, toRefs, onMounted, onUpdated, onRenderTracked, onRenderTriggered } from 'vue';
+import { ref, defineComponent, computed, watch, reactive, toRefs, onMounted, onUpdated, onRenderTracked, onRenderTriggered } from 'vue';
 
 interface DataProps {
   count: number;
@@ -34,17 +34,20 @@ export default defineComponent({
     //   count.value++
     // }
     onMounted(() => {
-      console.log('onMounted')
+      // console.log('onMounted')
     })
     onUpdated(() => {
-      console.log('onUpdated')
+      // console.log('onUpdated')
     })
     onRenderTracked((e) => {
-      console.log('onRenderTracked', e)
+      // console.log('onRenderTracked', e)
     })
     onRenderTriggered((e) => {
-      console.log('onRenderTriggered', e)
+      // console.log('onRenderTriggered', e)
     })
+
+    const title = ref('watch')
+
     // reactive 生成响应式对象
     const data: DataProps = reactive({
       count: 0,
@@ -52,10 +55,15 @@ export default defineComponent({
         data.count++
         data.numbers[0] = data.count
         data.person.name = `张三${data.count}`
+        title.value = `${title.value}+${data.count}`
+        window.document.title = title.value
        },
       double: computed(() => data.count * 2),
       numbers: [0, 1, 2, 3],
       person: {}
+    })
+    watch([title, () => data.count], (newValue, old) => {
+      console.log(old, newValue)
     })
     // 如果直接展开data，他的每一项将失去响应式对象属性。因此要通过toRefs 转化为 响应式对象
     const refData = toRefs(data)
