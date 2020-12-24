@@ -1,5 +1,5 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
+  <img alt="Vue logo" src="./assets/images/mapping.png">
   <div class="count">{{ count }}</div>
   <div class="count">{{ double }}</div>
   <ul>
@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, reactive, toRefs } from 'vue';
+import { defineComponent, computed, reactive, toRefs, onMounted, onUpdated, onRenderTracked, onRenderTriggered } from 'vue';
 
 interface DataProps {
   count: number;
@@ -33,6 +33,18 @@ export default defineComponent({
     // const increase = () => {
     //   count.value++
     // }
+    onMounted(() => {
+      console.log('onMounted')
+    })
+    onUpdated(() => {
+      console.log('onUpdated')
+    })
+    onRenderTracked((e) => {
+      console.log('onRenderTracked', e)
+    })
+    onRenderTriggered((e) => {
+      console.log('onRenderTriggered', e)
+    })
     // reactive 生成响应式对象
     const data: DataProps = reactive({
       count: 0,
@@ -50,7 +62,8 @@ export default defineComponent({
     return {
       ...refData
     }
-  }
+  },
+
 });
 </script>
 
@@ -62,6 +75,10 @@ export default defineComponent({
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+img{
+  width: 400px;
+  height: 400px;
 }
 .count {
   font-size: 30px;
