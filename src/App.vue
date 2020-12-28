@@ -3,19 +3,26 @@
   <div>
     <span>x:{{x}}</span>  | <span>y:{{y}}</span>
   </div>
+  <div class="loading" v-if="loading">loading!...</div>
+  <img class="dogImg" v-if="loaded" :src="result.message" >
 </template>
 
 <script lang="ts">
 import { defineComponent} from 'vue';
 import useMousePostion from './hooks/useMousePostion'
+import useURLLoader from './hooks/useURLLoader'
 
 export default defineComponent({
   name: 'App',
   setup() {
     const { x, y } = useMousePostion()
+    const { result, loading, loaded } = useURLLoader('https://dog.ceo/api/breeds/image/random')
     return {
       x,
-      y
+      y,
+      loaded,
+      loading,
+      result
     }
   },
 
@@ -31,7 +38,7 @@ export default defineComponent({
   color: #2c3e50;
   margin-top: 60px;
 }
-img{
+.dogImg{
   width: 400px;
   height: 400px;
 }
@@ -39,13 +46,9 @@ img{
   font-size: 30px;
   font-weight: 700
 }
-.btn {
-  width: 100px;
-  height: 30px;
-  background-color: yellowgreen;
-  margin: 0 auto;
-  line-height: 30px;
-  border-radius: 6px;
+.loading {
+  font-size: 30px;
+  font-weight: 700;
   text-align: center
 }
 </style>
