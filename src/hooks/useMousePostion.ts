@@ -4,7 +4,7 @@ interface DataProps {
     x: number;
     y: number;
     updateMouse: (e: MouseEvent) => void;
-  }
+}
 function useMousePostion() {
     const data: DataProps = reactive({
         x: 0,

@@ -14,7 +14,7 @@ function useURLLoader<T>(url: string) {
     axios.get(url).then(res => {
         loaded.value = true
         loading.value = false
-        result.value = res.data
+        result.value = {...res.data}
     }).catch(err => {
         error.value = err
         loading.value = false
