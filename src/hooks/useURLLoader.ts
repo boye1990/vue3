@@ -1,9 +1,9 @@
 import { ref } from 'vue';
 import axios from 'axios';
 
-function useURLLoader(url: string) {
+function useURLLoader<T>(url: string) {
     // 返回
-    const result = ref(null)
+    const result = ref<T | null>(null)
     // 请求状态
     const loading = ref(true)
     // 是否请求完毕
