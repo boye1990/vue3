@@ -6,14 +6,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent} from 'vue';
 import useMousePostion from './hooks/useMousePostion'
 
 export default defineComponent({
   name: 'App',
   setup() {
     const { x, y } = useMousePostion()
-
     return {
       x,
       y

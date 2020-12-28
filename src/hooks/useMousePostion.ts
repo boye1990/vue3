@@ -1,20 +1,31 @@
-import {ref, onMounted, onUnmounted} from 'vue'
+import {reactive, toRefs, onMounted, onUnmounted} from 'vue'
 
-
+interface DataProps {
+    x: number;
+    y: number;
+    updateMouse: (e: MouseEvent) => void;
+  }
 function useMousePostion() {
-    const x = ref(0)
-    const y = ref(0)
-    const updateMouse = (e: MouseEvent) => {
-        x.value = e.pageX
-        y.value = e.pageY
-    }
+    const data: DataProps = reactive({
+        x: 0,
+        y: 0,
+        updateMouse: (e: MouseEvent) => {
+            data.x = e.pageX
+            data.y = e.pageY
+        }
+    })
+    const refData = toRefs(data)
+
+
     onMounted(() => {
-        document.addEventListener('click', updateMouse)
+        document.addEventListener('click', data.updateMouse)
     })
     onUnmounted(() => {
-        document.removeEventListener('click', updateMouse)
+        document.removeEventListener('click', data.updateMouse)
     })
-    return {x, y}
+    return {
+        ...refData
+    }
 }
 
 export default useMousePostion
