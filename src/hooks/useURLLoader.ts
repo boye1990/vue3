@@ -1,29 +1,34 @@
-import { ref } from 'vue';
+import { reactive, toRefs } from 'vue';
 import axios from 'axios';
 
 function useURLLoader<T>(url: string) {
-    // 返回
-    const result = ref<T | null>(null)
-    // 请求状态
-    const loading = ref(true)
-    // 是否请求完毕
-    const loaded = ref(false)
-    // 请求错误信息
-    const error = ref(null)
+    
+    interface ReactiveData {
+        result: T | null;
+        loading: boolean;
+        loaded: boolean;
+        error: any;
+    }
+
+    const data: ReactiveData = reactive({
+        result: null,
+        loading: true,
+        loaded: false,
+        error: null
+    })
+
+    const refData = toRefs(data)
 
     axios.get(url).then(res => {
-        loaded.value = true
-        loading.value = false
-        result.value = {...res.data}
+        data.loaded = true
+        data.loading = false
+        data.result = {...res.data}
     }).catch(err => {
-        error.value = err
-        loading.value = false
+        data.error = err
+        data.loading = false
     })
     return {
-        result,
-        loading,
-        loaded,
-        error
+        ...refData
     }
 }
 
