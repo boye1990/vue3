@@ -1,17 +1,29 @@
 <template>
+  <p v-show="error">异步请求的错误{{error}}</p>
+  <Suspense>
+    <template #default>
+      <dog-show></dog-show>
+    </template>
+    <template #fallback>
+      <h1>loading!...</h1>
+    </template>
+  </Suspense>
   <h1>监听鼠标点击坐标</h1>
   <div>
     <span>x:{{x}}</span>  | <span>y:{{y}}</span>
   </div>
   <div class="loading" v-if="loading">loading!...</div>
   <img class="dogImg" v-if="loaded" :src="result[0].url" >
-  <Modal :isShowModal='isShowModal' @close_modale='closeModal'></Modal>
+  <Modal :isShowModal='isShowModal' @close_modale='closeModal'>
+    <div>你好</div>
+  </Modal>
   <div class="openModal" @click='closeModal'>openModal</div>
 </template>
 
 <script lang="ts">
 import Modal from './components/modal.vue';
-import { defineComponent, watch, ref} from 'vue';
+import DogShow from './components/dogShow.vue';
+import { defineComponent, watch, ref, onErrorCaptured} from 'vue';
 import useMousePostion from './hooks/useMousePostion'
 import useURLLoader from './hooks/useURLLoader'
 interface DogReslutData {
@@ -28,10 +40,16 @@ interface CatReslutData {
 export default defineComponent({
   name: 'App',
   components: {
-    Modal
+    Modal,
+    DogShow
   },
   setup() {
-
+    const error = ref(null)
+    onErrorCaptured((e: any) => {
+      error.value = e
+      // 表示错误是否向上传播
+      return true
+    })
     const isShowModal = ref(false)
 
     const closeModal = ref(() => {
@@ -53,7 +71,8 @@ export default defineComponent({
       loading,
       result,
       isShowModal,
-      closeModal
+      closeModal,
+      error
     }
   },
 
