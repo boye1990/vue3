@@ -5,10 +5,13 @@
   </div>
   <div class="loading" v-if="loading">loading!...</div>
   <img class="dogImg" v-if="loaded" :src="result[0].url" >
+  <Modal :isShowModal='isShowModal' @close_modale='closeModal'></Modal>
+  <div class="openModal" @click='closeModal'>openModal</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, watch} from 'vue';
+import Modal from './components/modal.vue';
+import { defineComponent, watch, ref} from 'vue';
 import useMousePostion from './hooks/useMousePostion'
 import useURLLoader from './hooks/useURLLoader'
 interface DogReslutData {
@@ -24,7 +27,17 @@ interface CatReslutData {
 }
 export default defineComponent({
   name: 'App',
+  components: {
+    Modal
+  },
   setup() {
+
+    const isShowModal = ref(false)
+
+    const closeModal = ref(() => {
+      isShowModal.value = !isShowModal.value
+    })
+
     const { x, y } = useMousePostion()
     // const { result, loading, loaded } = useURLLoader<DogReslutData>('https://dog.ceo/api/breeds/image/random')
     const { result, loading, loaded } = useURLLoader<CatReslutData[]>('https://api.thecatapi.com/v1/images/search?limit=1')
@@ -38,7 +51,9 @@ export default defineComponent({
       y,
       loaded,
       loading,
-      result
+      result,
+      isShowModal,
+      closeModal
     }
   },
 
@@ -66,5 +81,15 @@ export default defineComponent({
   font-size: 30px;
   font-weight: 700;
   text-align: center
+}
+.openModal {
+  width: 120px;
+  height: 30px;
+  border-radius: 15px;
+  margin: 50px auto;
+  background-color: cornflowerblue;
+  line-height: 30px;
+  font-weight: 700;
+  cursor: pointer;
 }
 </style>
